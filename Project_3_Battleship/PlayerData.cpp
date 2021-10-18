@@ -6,10 +6,8 @@
 PlayerData::PlayerData() {
 }
 
-PlayerData::PlayerData(const PlayerData& orig) {
-}
-
-PlayerData::~PlayerData() {
+PlayerData::~PlayerData(){
+    Destroy();
 }
 
 void PlayerData::CreateFleet() {
@@ -59,4 +57,12 @@ void PlayerData::Destroy() {
     targetBoard.Destroy();
     playerBoard.Destroy();
     delete[] fleet;
+}
+
+void PlayerData::setPlayerName(std::string name){
+    playerName=name;
+}
+
+std::string PlayerData::getPlayerName(){
+    return playername;
 }
