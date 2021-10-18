@@ -1,14 +1,116 @@
+/*
+ * Character Key
+ * S = Ship
+ * - = Empty
+ * ! = Hit
+ * * = Miss
+ */
 
-#include "View.h"
-#include "Constants.h"
+
+#include <cstdlib>
 #include <iostream>
 #include <iomanip>
 
-View::View() {
+#include "Grid.h"
+#include "PlayerData.h"
+#include "Input.h"
+#include "Cell.h"
+#include "Constants.h"
+
+using namespace std;
+
+void drawGrids(PlayerData *);
+void drawSymbolKey();
+
+int main(int argc, char** argv) {
+
+    //////////////////////////////////////////////////////////////////////
+    //                    Create Test Data                              //
+    //               fill 
+    //Target Test Data
+   bool tShipsAry[8][8]={false,false,false,false,false,false,false,false,
+                        false,true,false,false,false,false,true,false,
+                        false,true,false,false,false,false,true,false,
+                        false,true,false,false,false,false,true,false,
+                        false,true,false,false,false,false,false,false,
+                        false,false,false,true,true,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false};
+  bool tShotsAry[8][8]={false,false,false,false,false,false,false,false,
+                        false,true,false,false,false,false,true,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,true,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        true,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,true,false,false,false};
+    bool tHitsAry[8][8]={false,false,false,false,false,false,false,false,
+                        false,true,false,false,false,false,true,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false};
+   
+
+    //Player Test Data
+    bool pShipsAry[8][8]={false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,true,false,false,false,
+                        false,false,false,false,true,false,false,false,
+                        false,false,false,false,true,false,false,false,
+                        false,false,false,false,true,false,false,false,
+                        true,true,false,false,false,false,false,false};
+    bool pShotsAry[8][8]={false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,true,
+                        false,false,false,false,true,false,false,false,
+                        false,true,false,false,true,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,true,
+                        false,false,false,false,false,false,false,false};
+    bool pHitsAry[8][8]={false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,true,false,false,false,
+                        false,false,false,false,true,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false,
+                        false,false,false,false,false,false,false,false};
+
+
+    //Fill PlayerData with test inputs
+    PlayerData *playerData;
+    playerData = new PlayerData();
+    //Fill player name with test Data
+    playerData->setPlayerName("Lindsay");
+    
+    //Fill Grid with test Data
+    for (int i=0; i<BOARD_WIDTH; i++){
+      for(int j=0; j<BOARD_HEIGHT; j++){
+        playerData->targetBoard.SetCell(i, j, tShipsAry[i][j], tShotsAry[i][j], tHitsAry[i][j]);
+        playerData->playerBoard.SetCell(i, j, pShipsAry[i][j], pShotsAry[i][j], pHitsAry[i][j]);
+      }
+    }
+
+    //*****************************************************************//
+    //                            EXECUTION                            //
+    //Display Symbol Key
+    drawSymbolKey();
+    //Use Your Function to Draw the Board
+    drawGrids(playerData);
+    //Make sure to Destroy Classes that Include this function
+    playerData->Destroy();
+   
+    
+    return 0;
 }
 
-void View::drawGrids(PlayerData *playerdata){
-  //Draw current player's Grid
+//drawGrids View member function
+void drawGrids(PlayerData *playerdata){
+    //Draw current player's Grid
     cout<<playerdata->getPlayerName()<<"'s Display:"<<endl;              
     cout<<"     X   1   2   3   4   5   6   7   8"<<endl;
     cout<<"   Y +-----------------------------------+"<<endl;
@@ -72,10 +174,11 @@ void View::drawGrids(PlayerData *playerdata){
     }
 }
 
-void View::drawSymbolsKey(){
-  for(int i=0; i<27; i++) cout<<"*";
+//drawSymbolsKey View member function
+void drawSymbolKey(){
+    for(int i=0; i<27; i++) cout<<"*";
     cout<<endl;
-    cout<<"*"<<"\tSymbol Key:"<<right<<setw(8)<<"*"<<endl;
+    cout<<"*"<<"\tSymbol Key:"<<right<<setw(12)<<"*"<<endl;
     cout<<"*"<<right<<setw(10)<<"Empty: "<<static_cast<char>(Empty)
         <<right<<setw(10)<<"Hit: "<<static_cast<char>(Hit)<<setw(4)<<"*"<<"\n"
         <<left<<"*"<<right<<setw(10)<<"Ship: "<<static_cast<char>(Ship)
@@ -83,7 +186,3 @@ void View::drawSymbolsKey(){
     for(int i=0; i<27; i++) cout<<"*";
     cout<<endl;
 }
-  
-
-
-
